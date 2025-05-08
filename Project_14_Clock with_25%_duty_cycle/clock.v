@@ -1,12 +1,18 @@
-module clock_gen;
-  reg clock;
+`timescale 1ns/1ps
 
-  initial begin
-    clock = 1'b0; // Clock starts at 0 at time = 0
-  end
-
-  always begin
-    #30 clock = 1'b1; // LOW for 30 units
-    #10 clock = 1'b0; // HIGH for 10 units
-  end
+module stimulus;
+	reg clock;
+	initial begin
+		$dumpfile("output.vcd");
+		$dumpvars(0,stimulus);
+		clock = 1'b0;
+	end
+	always begin
+		#30 clock = ~clock;
+		#10 clock = ~clock;
+	end
+	initial 
+		$monitor("time = %3d clock = %d" , $time , clock);
+	initial
+		#500 $finish;
 endmodule
